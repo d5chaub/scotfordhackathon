@@ -70,36 +70,7 @@ dcc.Input(
 
 ])
 
-app.layout = html.Div([
-    html.Div(dcc.Input(id='time-interval', type='text')),
-    html.Button('Submit', id='button'),
-    html.Div(id='output-container-button',
-             children='Enter a value and press submit')
-])
 
-
-@app.callback(
-    dash.dependencies.Output('output-container-button', 'children'),
-    [dash.dependencies.Input('button', 'n_clicks')],
-    [dash.dependencies.State('time-interval', 'value')])
-
-def update_output(n_clicks, value):
-    return 'The time interval was "{}" and the button has been clicked {} times'.format(
-        value,
-        n_clicks
-    ),
-
-html.Div(children='''
-        Analysis Type
-    '''),
-
-dcc.RadioItems(
-    options=[
-        {'label': 'Pressure', 'value': 'PRE'},
-        {'label': 'Temperature', 'value': 'TEM'}
-    ],
-    value='MTL'
-),  
 
 #app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 #app.layout = html.Div([
