@@ -29,26 +29,3 @@ while i < j:
 
 print(j)
 print(cyclecounter)
-
-
-
-#for i in data:
-    #print(i)
-
-
-    #print("Pair")
-    #if i > limit:
-        #print(i)
-        
-        #try:
-         #   if data[data.index(i)-1] < limit:
-          #  if data[i-1] < limit:
-           #     cyclecounter +=1
-            #    print(data[i-1])
-       # except:
-           # print("end")
-
-#scatter plot
-#fig = px.scatter(x=df['timestamp'].tolist(), y =df['SCTM:PI37810'].tolist())
-#fig.show()
-#if data[data.index(i)-1] < limit:
