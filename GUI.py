@@ -65,7 +65,13 @@ dcc.Input(
     type='text',
     value=''
 ),  
-
+dcc.RadioItems(
+    options=[
+        {'label': 'Pressure', 'value': 'PRE'},
+        {'label': 'Temperature', 'value': 'TEM'}
+    ],
+    value=''
+),  
 #app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 ])
