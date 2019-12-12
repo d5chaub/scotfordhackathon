@@ -2,6 +2,7 @@ import dash
 import dash_core_components as dcc
 from datetime import datetime as dt
 import dash_html_components as html
+from datetime import datetime, timedelta, date
 from dash.dependencies import Output, Input
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -54,6 +55,8 @@ dcc.Dropdown(
 dcc.DatePickerRange(
     id='date-picker-range',
     start_date=dt(2019, 1, 1),
+    min_date_allowed=date(2017, 6, 1),
+    max_date_allowed=date.today(),
     end_date_placeholder_text='Select a date!'
 ),
 
@@ -73,20 +76,21 @@ dcc.RadioItems(
     ],
     value=''
 ),  
-#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+ html.Button(
+        id='button-update',
+        children=['Submit Parameters']
+    ),
 
 ])
 
 @app.callback(
-    Output(component_id='output-graph', component_property='children'),
-    [Input(component_id='input', component_property='value'),
-    Input(component_id='date-picker-range', component_property='start_date'),
-    Input(component_id='date-picker-range', component_property='end_date')]
-)
-def update_value(input_data, start_date, end_date):
-    start = datetime.strptime(start_date, "%m/%d/%Y")
-    end = datetime.strptime(end_date, "%m/%d/%Y")
-
+    [Output('my-date-picker-range', 'start_date'), Output('my-date-picker-range', 'end_date')],
+    [Input('button-update', 'n_clicks')])
+def update_output(n_clicks):
+    if n_clicks is not None and n_clicks > 0:
+        sd = datetime.strptime(start_date, '%Y-%m-%d')
+        ed = datetime.strptime(end_date, '%Y-%m-%d')
+        return start_date, end_date
 
 if __name__ == '__main__':
     app.run_server(debug=True),

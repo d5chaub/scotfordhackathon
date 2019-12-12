@@ -1,44 +1,73 @@
-import datetime
+# -*- coding: utf-8 -*-
 import dash
-from dash.dependencies import Output, Input
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly
+from dash_table import DataTable
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+from dash.dependencies import Input, Output, State
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+import pandas as pd
+
+from datetime import date, datetime, timedelta
+import time
+
+url = 'https://github.com/plotly/datasets/raw/master/26k-consumer-complaints.csv'
+
+rawDf = pd.read_csv(url)
+df = rawDf.to_dict("rows"),
+
+app = dash.Dash()
+app.scripts.config.serve_locally = True
 
 app.layout = html.Div(children=[
-    html.H1(children='Input to graph'),
-    dcc.Input(id='input', value='', type='text'),
-    dcc.DatePickerRange(
-        id='date-picker-range',
-        start_date_placeholder_text='Select a starting date',
-        end_date_placeholder_text='Select an ending date',
-        start_date='',
-        end_date=''
+    html.Button(
+        id='button-update',
+        children=['Update']
     ),
-
-    html.Div(id='output-graph', style={
-        'color': 'green'
-    }),
-])
-
-
+    dcc.DatePickerRange(
+        id='my-date-picker-range',
+        min_date_allowed=date(2018, 12, 14),
+        max_date_allowed=date.today(),
+        start_date=date.today() - timedelta(days=7),
+        end_date=date.today(),
+        display_format='D/M/Y'
+    ),
+    dcc.Loading(
+        id="loading-1",
+        children=[
+            DataTable(
+                id='datatable-weapons',
+                columns=[{"name": i, "id": i, "type": "numeric", 'format': {'locale': {'group': '.', 'decimal': ','}}} for i in rawDf.columns],
+                data=[]
+            )
+        ]
+    )])
 
 @app.callback(
-    Output(component_id='output-graph', component_property='children'),
-    [Input(component_id='input', component_property='value'),
-    Input(component_id='date-picker-range', component_property='start_date'),
-    Input(component_id='date-picker-range', component_property='end_date')]
-)
-def update_value(input_data, start_date, end_date):
-    start = start_date #datetime.datetime(2015, 1, 1)
-    end = end_date #datetime.datetime.now()
-    print(start, end)
-    ### Code to plot the graph ###
+    [Output('my-date-picker-range', 'start_date'), Output('my-date-picker-range', 'end_date')],
+    [Input('button-update', 'n_clicks')])
+def update_output(n_clicks):
+    if n_clicks is not None and n_clicks > 0:
+        start_date = date(2019, 2, 12)
+        end_date = date.today()
+        return start_date, end_date
 
-if __name__ == '__main__':
-    app.run_server(debug=True),
-    app.run_server(dev_tools_hot_reload=False)
+    return date(2019, 2, 23), date(2019, 2, 27)
+
+@app.callback(
+    [Output('datatable-weapons', 'data')],
+    [Input('my-date-picker-range', 'start_date'), Input('my-date-picker-range', 'end_date')])
+def update_graph(begin_dt, end_dt):
+    begin_date = datetime.strptime(begin_dt, '%Y-%m-%d')
+    end_date = datetime.strptime(end_dt, '%Y-%m-%d')
+    days = (end_date - begin_date).days
+
+    rawDfSlice = rawDf[0:days]
+    dfSlice = rawDfSlice.to_dict("rows")
+
+    time.sleep(5)
+
+    return (dfSlice,)
+
+if __name__ == "__main__":
+    app.run_server(port=8053)
