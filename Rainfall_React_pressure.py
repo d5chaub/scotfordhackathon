@@ -14,18 +14,6 @@ def getKey(item):
 
 import rainflow
 rfcycles=rainflow.count_cycles(data)
-#print(sorted(rfcycles, key=getKey))
-#print(rfcycles[25:])
-
-# for low, high, mult in rainflow.extract_cycles(data[:50]):
-#     mean = 0.5 * (high + low)
-#     rng = high - low
-
-#     print(mean)
-#     print(rng)
-#     print(high, low, mult)
-
-#     print('hello world')
 
 res = rainflow.count_cycles(data[:])
 count = 0
@@ -36,7 +24,3 @@ for x in res:
 
 print('pressure cycle count is')
 print(count)
-
-    #elif:
-# res = [x[1]*20 for x in res if x[0]>=250]
-# print(res)

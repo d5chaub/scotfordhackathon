@@ -19,26 +19,20 @@ print(relfiles)
 for file in relfiles:
     df = pd.read_csv(mypath + file)
     print(df.head)
-
+    df.iloc[:,1] = pd.to_numeric(df.iloc[:,1], errors='coerce')
     data  = df.iloc[:,1].tolist()
     #print(data)
 
     for i in data:
+        previous = data[data.index(i) -1]
         try:
-            i = float(i)
-            print(data[data.index(i) -1])
+            print("The current reading is " - + str(i)
+            #i = float(i)
+            #print(data[data.index(i) -1])
             if i > limit and data[data.index(i) -1]<2000:
                 cyclecounter+=1
         except:
             pass
-# Metal temperature differential oC	Factor
-# <28	0
-# 28 to 56	1
-# 57 to 83	2
-# 84 to 139	4
-# 140 to 194	8
-# 195 to 250	12
-# >251	20
 
     print('For equipment {}'.format(file[:-4]))
     print('The current method cycle count is - ' + str(cyclecounter))

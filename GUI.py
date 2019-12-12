@@ -83,14 +83,14 @@ dcc.RadioItems(
 
 ])
 
-@app.callback(
-    [Output('my-date-picker-range', 'start_date'), Output('my-date-picker-range', 'end_date')],
-    [Input('button-update', 'n_clicks')])
-def update_output(n_clicks):
-    if n_clicks is not None and n_clicks > 0:
-        sd = datetime.strptime(start_date, '%Y-%m-%d')
-        ed = datetime.strptime(end_date, '%Y-%m-%d')
-        return start_date, end_date
+# @app.callback(
+#     [Output('my-date-picker-range', 'start_date'), Output('my-date-picker-range', 'end_date')],
+#     [Input('button-update', 'n_clicks')])
+# def update_output(n_clicks):
+#     if n_clicks is not None and n_clicks > 0:
+#         sd = datetime.strptime(start_date, '%Y-%m-%d')
+#         ed = datetime.strptime(end_date, '%Y-%m-%d')
+#         return start_date, end_date
 
 if __name__ == '__main__':
     app.run_server(debug=True),
